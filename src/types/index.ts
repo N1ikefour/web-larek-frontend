@@ -8,6 +8,7 @@ export interface Iitem {
   preview?: string,
 }
 
+
 export interface Ibasket {
   totalItems: number,
   itemlist: Iitem[],
