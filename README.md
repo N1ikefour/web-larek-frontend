@@ -149,7 +149,7 @@ export type Tusercontacts = Pick <Iuserinfo, 'email' | 'phonenumber'>
 - title: string - название карточки
 - category: string - категория карточки
 - price: number - цена карточки
-- preview: string | null - id выбранной карточки для просмотра в модельном окне 
+- preview?: string | null - id выбранной карточки для просмотра в модельном окне 
 
 
 #### Класс Basket 

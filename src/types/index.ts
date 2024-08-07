@@ -1,4 +1,5 @@
 export interface Iitem {
+  name: string;
   id: string,
   description: string,
   image: string,
