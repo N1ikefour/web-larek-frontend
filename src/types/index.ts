@@ -1,7 +1,6 @@
 export interface Iitem {
-  name: string;
-  id: string,
-  description: string,
+  id?: string,
+  description?: string,
   image: string,
   title: string,
   category: string,
@@ -23,8 +22,10 @@ export interface Ibasket {
 
 export interface Iuserinfo {
   email: string,
-  phonenumber: number,
-  checkValidation(data: Record<keyof Tusercontacts, string>): boolean
+  phonenumber: string,
+  payment: string,
+  address: string,
+  // checkValidation(data: Record<keyof Tusercontacts, string>): boolean
 }
 
 export interface Iuseraddress {
@@ -33,8 +34,15 @@ export interface Iuseraddress {
 }
 
 
+export interface IOrder extends Iuserinfo {
+  items: string[]
+}
+
+
+
+
 export type Titeminfo = Pick<Iitem, 'title' | 'image' | 'category' | 'description' | 'price'>;
 
 export type Tbasketlist = Pick <Iitem, 'title' | 'price' | 'id'>[];
 
-export type Tusercontacts = Pick <Iuserinfo, 'email' | 'phonenumber'>
+export type Tusercontacts = Pick <Iuserinfo, 'email' | 'phonenumber' | 'payment' | 'address'>

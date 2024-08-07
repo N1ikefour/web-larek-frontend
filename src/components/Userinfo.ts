@@ -2,12 +2,14 @@ import { Iuseraddress, Iuserinfo, Tusercontacts } from "../types";
 
 class UserInfo implements Iuserinfo {
   email: string;
-  phonenumber: number;
+  phonenumber: string;
 
   constructor(data: Tusercontacts) {
   this.email = data.email;
   this.phonenumber = data.phonenumber;
   }
+  payment: string;
+  address: string;
 
   checkValidation(data: Record<keyof Tusercontacts, string>): boolean {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Простая проверка email
