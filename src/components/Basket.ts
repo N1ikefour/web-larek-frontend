@@ -1,34 +1,46 @@
-import { Ibasket, Iitem } from "../types";
+import { cloneTemplate, createElement, ensureElement } from "../utils/utils";
+import { View } from "./base/Component";
+import { EventEmitter } from "./base/events";
 
-class Basket implements Ibasket {
-  totalItems: number = 0;
-  itemlist: Iitem[] = [];
+interface IbasketView { 
+  items: HTMLElement[];
+  total: number;
+}
 
-  addItem(item: Iitem, itemId: string): void {
-    this.itemlist.push(item);
-    this.totalItems++;
+export class Basket extends View<IbasketView> {
+  static template = ensureElement<HTMLTemplateElement>('#basket');
+
+  protected _list: HTMLElement;
+  protected _total: HTMLElement;
+  protected _button: HTMLElement;
+
+  constructor(events: EventEmitter) {
+    super(events, cloneTemplate(Basket.template));
+
+    this._list = ensureElement<HTMLElement>('.basket__list', this.container);
+    this._total = ensureElement<HTMLElement>('.basket__price', this.container);
+    this._button = ensureElement<HTMLElement>('.basket__button', this.container);
+
+    this._button.addEventListener('click', () => {
+      events.emit('order:open');
+    })
+
+    this.items = [];
   }
 
-  deleteItem(itemId: string, payload?: () => void): void {
-   const index = this.itemlist.findIndex(item => item.id === itemId);
-   if (index !== -1) {
-     this.itemlist.splice(index, 1);
-     this.totalItems--;
-     if (payload) {
-        payload();
-     }
-   }
+  set items(items: HTMLElement[]) {
+    if (items.length) {
+      this._list.replaceChildren(...items);
+      this._button.removeAttribute('disabled');}
+       else {
+      this._list.replaceChildren(createElement<HTMLParagraphElement>('p', {
+        textContent: 'Корзина пуста'
+      }));
+      this._button.setAttribute('disabled', 'disabled')
+    }
   }
 
-  getItem(itemId: string): Iitem | undefined {
-    return this.itemlist.find(item => item.id === itemId);
-  }
-
-  getSumm(): number {
-    return this.itemlist.reduce((sum, item) => sum + item.price, 0);
-  }
-
-  setSumm(summ: number): void {
-   console.log(`Сумма корзины установлена на: ${summ}`);
+  set total(total: number) {
+    this.setText(this._total, `${total} синапсов`)
   }
 }

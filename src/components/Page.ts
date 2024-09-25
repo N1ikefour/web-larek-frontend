@@ -5,6 +5,7 @@ import { IEvents } from "./base/events";
 interface IPage {
   counter: number;
   catalog: HTMLElement[];
+  locked: boolean;
 }
 
 export class Page extends Component<IPage> {
@@ -18,12 +19,12 @@ export class Page extends Component<IPage> {
       super(container);
 
       this._counter = ensureElement<HTMLElement>('.header__basket-counter');
-      this._catalog = ensureElement<HTMLElement>('.card-catalog');
+      this._catalog = ensureElement<HTMLElement>('.gallery');
       this._wrapper = ensureElement<HTMLElement>('.page__wrapper');
       this._basket = ensureElement<HTMLElement>('.header__basket');
 
       this._basket.addEventListener('click', () => {
-          this.events.emit('bids:open');
+          this.events.emit('basket:open');
       });
   }
 
@@ -35,4 +36,11 @@ export class Page extends Component<IPage> {
       this._catalog.replaceChildren(...items);
   }
 
+  set locked(value: boolean) {
+      if (value) {
+          this._wrapper.classList.add('page__wrapper_locked');
+      } else {
+          this._wrapper.classList.remove('page__wrapper_locked');
+      }
+  }
 }

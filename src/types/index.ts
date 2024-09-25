@@ -1,48 +1,34 @@
 export interface Iitem {
-  id?: string,
+  id: string,
   description?: string,
   image: string,
   title: string,
   category: string,
-  price: number,
-  preview?: string,
+  price: number | null,
+  preview?: string
 }
 
 
 export interface Ibasket {
   totalItems: number,
-  itemlist: Iitem[],
-  addItem(item: Iitem, itemId: string): void;
-  deleteItem(itemId: string, payload: () => void | null): void;
-  getItem(itemId: string): Iitem;
-  getSumm(): number;
-  setSumm(summ: number): void;
+  itemlist: string[],
 }
 
+export type Payment = 'cash' | 'card'
 
-export interface Iuserinfo {
-  email: string,
-  phonenumber: string,
-  payment: string,
-  address: string,
-  // checkValidation(data: Record<keyof Tusercontacts, string>): boolean
-}
-
-export interface Iuseraddress {
-  address: string,
-  checkValidation(address: string): boolean
-}
-
-
-export interface IOrder extends Iuserinfo {
+export interface Iorder {
   items: string[]
+  email: string,
+  phone: string,
+  address: string,
+  total: number,
+  payment: Payment,
 }
 
 
+export type OrderForm = Omit<Iorder, 'total' | 'items'>
 
-
-export type Titeminfo = Pick<Iitem, 'title' | 'image' | 'category' | 'description' | 'price'>;
-
-export type Tbasketlist = Pick <Iitem, 'title' | 'price' | 'id'>[];
-
-export type Tusercontacts = Pick <Iuserinfo, 'email' | 'phonenumber' | 'payment' | 'address'>
+export interface IorderResult {
+  id: string,
+  total: number
+}

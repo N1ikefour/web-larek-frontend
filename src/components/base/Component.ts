@@ -7,11 +7,10 @@ export abstract class Component<T> {
         // Учитывайте что код в конструкторе исполняется ДО всех объявлений в дочернем классе
     }
 
-    // Инструментарий для работы с DOM в дочерних компонентах
 
     // Переключить класс
-    toggleClass(element: HTMLElement, className: string, force?: boolean) {
-        element.classList.toggle(className, force);
+    toggleClass( className: string, force?: boolean) {
+        this.container.classList.toggle(className)
     }
 
     // Установить текстовое содержимое
@@ -21,23 +20,7 @@ export abstract class Component<T> {
         }
     }
 
-    // Сменить статус блокировки
-    setDisabled(element: HTMLElement, state: boolean) {
-        if (element) {
-            if (state) element.setAttribute('disabled', 'disabled');
-            else element.removeAttribute('disabled');
-        }
-    }
 
-    // Скрыть
-    protected setHidden(element: HTMLElement) {
-        element.style.display = 'none';
-    }
-
-    // Показать
-    protected setVisible(element: HTMLElement) {
-        element.style.removeProperty('display');
-    }
 
     // Установить изображение с алтернативным текстом
     protected setImage(element: HTMLImageElement, src: string, alt?: string) {
@@ -50,8 +33,14 @@ export abstract class Component<T> {
     }
 
     // Вернуть корневой DOM-элемент
-    render(data?: Partial<T>): HTMLElement {
+    render(data?: T): HTMLElement {
         Object.assign(this as object, data ?? {});
         return this.container;
+    }
+}
+
+export class View<T> extends Component<T> {
+    constructor(protected readonly events: IEvents, container: HTMLElement) {
+        super(container)
     }
 }

@@ -1,34 +1,30 @@
 import { Iitem } from "../types";
-import { ensureElement } from "../utils/utils";
+import { bem, ensureElement } from "../utils/utils";
 import { Component } from "./base/Component";
 
 interface ICardActions {
   onClick: (event: MouseEvent) => void;
 }
 
-// export interface ICard {
-//   title: string;
-//   description?: string | string[];
-//   image: string;
-// }
+type CardMod = 'compact' | 'full';
 
 export class Card extends Component<Iitem> {
   protected _title: HTMLElement;
   protected _image?: HTMLImageElement;
   protected _description?: HTMLElement;
   protected _button?: HTMLButtonElement;
-  protected _category: HTMLElement;
+  protected _category?: HTMLElement;
   protected _price: HTMLElement;
 
   constructor(protected blockName: string, container: HTMLElement, actions?: ICardActions) {
       super(container);
 
       this._title = ensureElement<HTMLElement>(`.${blockName}__title`, container);
-      this._image = ensureElement<HTMLImageElement>(`.${blockName}__image`, container);
+      this._price = ensureElement<HTMLElement>(`.${blockName}__price`, container);
       this._button = container.querySelector(`.${blockName}__button`);
       this._description = container.querySelector(`.${blockName}__description`);
       this._category = container.querySelector(`.${blockName}__category`)
-      this._price = container.querySelector(`.${blockName}__prise`)
+      this._image =container.querySelector(`.${blockName}__image`)
 
       if (actions?.onClick) {
           if (this._button) {
@@ -37,6 +33,10 @@ export class Card extends Component<Iitem> {
               container.addEventListener('click', actions.onClick);
           }
       }
+  }
+
+  toggle(modif: CardMod) {
+    this.toggleClass(bem('card', undefined, modif).name)
   }
 
   set id(value: string) {
@@ -63,17 +63,20 @@ export class Card extends Component<Iitem> {
     this.setText(this._category, value);
   }
 
-  get category(): string {
-    return this._category.textContent || '';
+  set description(value: string) {
+     this.setText(this._description, value);
+  }
+
+  set button(value: string) {
+    this.setText(this._button, value)
   }
 
   set price(value: number) {
-    this.setText(this._price, value.toString());
-  }
-
-  get price(): number {
-    const priceText = this._price.textContent || '0'; // исправлено
-    return parseFloat(priceText); // преобразование строки в число
+    this.setText(this._price, value? `${value} синапсов` : 'бесценно'); 
+    if (this._button) {
+      console.log(this._button)
+      this._button.disabled = (value === 0);
+    }
   }
   
 
