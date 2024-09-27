@@ -2,11 +2,11 @@ import {Component, View} from "./base/Component";
 import {ensureElement} from "../utils/utils";
 import {IEvents} from "./base/events";
 
-interface IModalData {
+interface ImodalData {
     content: HTMLElement;
 }
 
-export class Modal extends View<IModalData> {
+export class Modal extends View<ImodalData> {
     protected _closeButton: HTMLButtonElement;
     protected _content: HTMLElement;
 
@@ -25,18 +25,30 @@ export class Modal extends View<IModalData> {
         this._content.replaceChildren(value);
     }
 
+    _toggleModal(state: boolean = true) {
+        this.toggleClass('modal_active', state);
+    }
+    
+    _handleEscape = (evt: KeyboardEvent) => {
+        if (evt.key === 'Escape') {
+            this.close();
+        }
+    };
+
     open() {
-        this.container.classList.add('modal_active');
+        this._toggleModal();
+        document.addEventListener('keydown', this._handleEscape);
         this.events.emit('modal:open');
     }
 
     close() {
-        this.container.classList.remove('modal_active');
+        this._toggleModal(false); 
+        document.removeEventListener('keydown', this._handleEscape);
         this.content = null;
         this.events.emit('modal:close');
     }
 
-    render(data: IModalData): HTMLElement {
+    render(data: ImodalData): HTMLElement {
         super.render(data);
         this.open();
         return this.container;

@@ -3,12 +3,12 @@ import { EventEmitter } from "./base/events";
 import { ensureElement } from "../utils/utils";
 
 
-interface IFormState {
+interface IformState {
     valid: boolean;
     errors: string[]
 }
 
-export class Form<T> extends View<IFormState> {
+export class Form<T> extends View<IformState> {
     protected _submit: HTMLButtonElement;
     protected _errors: HTMLElement;
 
@@ -59,7 +59,7 @@ export class Form<T> extends View<IFormState> {
         this.setText(this._errors, value)
     }
 
-    render(state: Partial<T> & IFormState) {
+    render(state: Partial<T> & IformState) {
         const {valid, errors, ...inputs} = state;
         super.render({valid, errors})
         Object.assign(this, inputs);

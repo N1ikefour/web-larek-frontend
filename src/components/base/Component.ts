@@ -9,8 +9,9 @@ export abstract class Component<T> {
 
 
     // Переключить класс
-    toggleClass( className: string, force?: boolean) {
-        this.container.classList.toggle(className)
+    toggleClass(className: string, force?: boolean, element?: HTMLElement) {
+        const target = element || this.container;
+        target.classList.toggle(className, force);
     }
 
     // Установить текстовое содержимое

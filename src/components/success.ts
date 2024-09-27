@@ -1,7 +1,7 @@
 import { ensureElement } from "../utils/utils";
 import { Component } from "./base/Component";
 
-interface ISuccess {
+interface Isuccess {
     total: number;
 }
 
@@ -9,7 +9,7 @@ interface ISuccessActions {
     onClick: () => void
 }
 
-export class Success extends Component<ISuccess> {
+export class Success extends Component<Isuccess> {
     protected _total: HTMLElement;
     protected _close: HTMLElement;
 

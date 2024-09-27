@@ -2,7 +2,7 @@ import { Iitem } from "../types";
 import { bem, ensureElement } from "../utils/utils";
 import { Component } from "./base/Component";
 
-interface ICardActions {
+interface IcardActions {
   onClick: (event: MouseEvent) => void;
 }
 
@@ -16,7 +16,7 @@ export class Card extends Component<Iitem> {
   protected _category?: HTMLElement;
   protected _price: HTMLElement;
 
-  constructor(protected blockName: string, container: HTMLElement, actions?: ICardActions) {
+  constructor(protected blockName: string, container: HTMLElement, actions?: IcardActions) {
       super(container);
 
       this._title = ensureElement<HTMLElement>(`.${blockName}__title`, container);
@@ -75,7 +75,7 @@ export class Card extends Component<Iitem> {
     this.setText(this._price, value? `${value} синапсов` : 'бесценно'); 
     if (this._button) {
       console.log(this._button)
-      this._button.disabled = (value === 0);
+      this._button.disabled = !value;
     }
   }
   
